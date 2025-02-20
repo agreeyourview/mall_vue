@@ -38,7 +38,10 @@
   <script setup>
   import { ref } from 'vue';
   import AddUser from '../components/addUser.vue';
-  
+  const emit = defineEmits([
+  'pageName'
+  ])
+  emit('pageName', 'user')
   const searchForm = ref({
     userName: '',
     address: ''

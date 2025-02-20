@@ -27,7 +27,10 @@
   <script setup>
   import { ref } from 'vue';
   import AddCategory from '../components/addCategory.vue';
-  
+  const emit = defineEmits([
+  'pageName'
+  ])
+  emit('pageName', 'category')
   const searchForm = ref({
     categoryName: ''
   });

@@ -31,7 +31,10 @@
   <script setup>
   import { ref } from 'vue';
   import AddSpec from '../components/addSpec.vue';
-  
+  const emit = defineEmits([
+  'pageName'
+  ])
+  emit('pageName', 'spec')
   // 搜索表单数据
   const searchForm = ref({
     specName: ''

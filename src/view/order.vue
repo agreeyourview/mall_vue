@@ -27,7 +27,10 @@
   
   <script setup>
   import { ref } from 'vue';
-  
+  const emit = defineEmits([
+  'pageName'
+  ])
+  emit('pageName', 'order')
   const searchForm = ref({
     userName: '',
     productName: ''

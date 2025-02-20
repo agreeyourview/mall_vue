@@ -27,7 +27,6 @@ import { useRoute } from 'vue-router';
 import { adminMenuData } from '../utils/publicData'; // 根据实际路径调整
 
 const route = useRoute();
-const currentRoute = route;
 const menuList = ref(adminMenuData);
 const menuNameRef = ref([]);
 const systemNameRef = ref();
@@ -76,8 +75,8 @@ const emit = defineEmits(['maxMenuWidth']);
 .el-menu {
   height: 100%;
 }
-.el-menu-item.is-active {
+/* .el-menu-item.is-active {
   background-color: #CECECE !important;
   color: black;
-}
+} */
 </style>

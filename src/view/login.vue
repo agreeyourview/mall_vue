@@ -61,7 +61,7 @@ const loginRules = computed(()=>({
 const loginFun = () => {
   loginFormRef.value.validate( async (valid) => {
     if (valid) {
-      router.push('/home')
+      router.push('/index')
     }
   })
   

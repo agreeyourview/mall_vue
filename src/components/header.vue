@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #fff;height: 58px;display: flex;align-items: center;justify-content: space-between;padding: 0 20px;">
+    <div style="background-color: #eee;height: 65px;display: flex;align-items: center;justify-content: space-between;padding: 0 20px;">
     <div style="height: 18px;">
       <el-icon style="font-size: 18px;top: 2px;" @click="isCollapseFun()">
         <div v-if="!isCollapse"><Fold style="font-size: 18px;cursor: pointer;" v-show="!iconRoll"/><Expand style="font-size: 18px;cursor: pointer;" v-show="iconRoll"/></div>

@@ -26,7 +26,10 @@
   <script setup>
   import { ref } from 'vue';
   import AddSlider from '../components/addSlider.vue';
-  
+  const emit = defineEmits([
+  'pageName'
+  ])
+  emit('pageName', 'slider')
   // 轮播图列表数据
   const sliderList = ref([
     {

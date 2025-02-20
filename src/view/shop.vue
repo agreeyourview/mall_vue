@@ -1,14 +1,20 @@
 <template>
     <div class="shop-container">
-      <el-form :inline="true" :model="searchForm">
-        <el-form-item label="商品名字">
-          <el-input v-model="searchForm.productName"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSearch">搜索</el-button>
-          <el-button type="success" @click="handleAddShop">新增</el-button>
-        </el-form-item>
-      </el-form>
+      <el-card>
+        <el-row :gutter="20">
+          <el-col :md="8" :lg="8">
+            <div class="searchBoxClass searchTextClass">
+              商品名字：
+              <el-input class="searchBtnClass" maxlength="128" v-model="searchForm.productName" :placeholder="'请输入商品名字'"></el-input>
+            </div>
+          </el-col>
+          <el-col :md="8" :lg="8">
+            <el-button type="primary" @click="handleSearch">搜索</el-button>
+            <el-button type="success" @click="handleAddShop">新增</el-button>
+          </el-col>
+          <el-col :md="8" :lg="8"></el-col>
+        </el-row>
+     
       <el-table :data="shopList">
         <el-table-column prop="id" label="ID"></el-table-column>
         <el-table-column prop="image" label="图片">
@@ -27,6 +33,7 @@
           </template>
         </el-table-column>
       </el-table>
+    </el-card>
       <AddShop v-if="addShopVisible" @close="addShopVisible = false" />
     </div>
   </template>
@@ -34,7 +41,10 @@
   <script setup>
   import { ref } from 'vue';
   import AddShop from '../components/addShop.vue';
-  
+  const emit = defineEmits([
+  'pageName'
+  ])
+  emit('pageName', 'shop')
   const searchForm = ref({
     productName: ''
   });
@@ -81,3 +91,4 @@
     padding: 20px;
   }
   </style>
+ 
