@@ -14,26 +14,34 @@
           </el-col>
           <el-col :md="8" :lg="8"></el-col>
         </el-row>
-     
-      <el-table :data="shopList">
-        <el-table-column prop="id" label="ID"></el-table-column>
-        <el-table-column prop="image" label="图片">
-          <template #default="scope">
-            <img :src="scope.row.image" width="50" height="50">
+        <el-row :gutter="20">
+          <MallTable ref="tableRef":page="pageNum" :pagesize="30" :tableCol="tableCol" 
+          :tableData="shopList" :tableHeight="`calc(100vh - 236px)`" style="border: #dcdfe6 solid 1px;"
+          :tableHeader="{ background: 'var(--el-color-primary)', color: '#fff' }"
+          >
+          <template v-slot="scopes">
+            <template v-if="scopes.item.prop == 'image'">
+              <img :src="scopes.scope.row.image" style="width: 60px;height: 60px">
+            </template>
+            <div v-else-if="scopes.item.prop == 'operation'" style="display: flex;justify-content: space-around;">
+              <el-icon :size="24" class="pointer" @click="handleDetail(scopes.scope.row)">
+                <List />
+              </el-icon>
+              <el-icon :size="24" class="pointer" @click="handleEdit(scopes.scope.row)">
+                <Edit />
+              </el-icon>
+              <el-icon :size="24" class="pointer" @click="handleDelete(scopes.scope.row)">
+                <Delete />
+              </el-icon>
+            </div>
+            <span v-else>{{ scopes.scope.row[`${scopes.item.prop}`] }}</span>
           </template>
-        </el-table-column>
-        <el-table-column prop="category" label="分类"></el-table-column>
-        <el-table-column prop="name" label="名字"></el-table-column>
-        <el-table-column prop="isShow" label="是否展示"></el-table-column>
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button type="info" @click="handleDetail(scope.row.id)">详情</el-button>
-            <el-button type="warning" @click="handleEdit(scope.row.id)">修改</el-button>
-            <el-button type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
+          </MallTable>
+        </el-row>
+        <el-row justify="end">
+          <el-pagination v-model:current-page="pageNum" :total="pageTotal" @current-change="pageChange" :page-size="30" layout="prev, pager, next" />
+        </el-row>
+      </el-card>
       <AddShop v-if="addShopVisible" @close="addShopVisible = false" />
     </div>
   </template>
@@ -41,6 +49,8 @@
   <script setup>
   import { ref } from 'vue';
   import AddShop from '../components/addShop.vue';
+  import MallTable from '../components/MallTable.vue';
+  import { Search, RefreshRight, List, Edit, Delete } from '@element-plus/icons-vue';
   const emit = defineEmits([
   'pageName'
   ])
@@ -49,12 +59,38 @@
     productName: ''
   });
   
+  const tableRef = ref(null);
+  const tableCol = [
+    { id: 1, label: '图片', prop: 'image', minWidth: 120 ,tooltip: true},
+    { id: 2, label: '分类', prop: 'category', minWidth: 120 ,tooltip: true},
+    { id: 3, label: '名称', prop: 'name', minWidth: 120 ,tooltip: true},
+    { id: 4, label: '价格', prop: 'price', minWidth: 120 ,tooltip: true},
+    { id: 5, label: '库存', prop: 'stock', minWidth: 120 ,tooltip: true},
+    { id: 6, label: '销量', prop: 'sales', minWidth: 120 ,tooltip: true},
+    { id: 7, label: '操作', prop:'operation', width: 150, fixed: 'right', tooltip: true},
+  ]
+  const pageNum = ref(1)
+  const pageSize = ref(10)
+  const pageTotal = ref(30)
   const shopList = ref([
     {
       id: 1,
-      image: 'https://via.placeholder.com/50',
+      image: '',
       category: '水果',
       name: '苹果',
+      price: 5.99,
+      stock: 100,
+      sales: 50,
+      isShow: true
+    },
+    {
+      id: 2,
+      image: '',
+      category: '蔬菜',
+      name: 'lettuce',
+      price: 3.99,
+      stock: 80,
+      sales:40,
       isShow: true
     }
   ]);
@@ -65,7 +101,10 @@
     // 处理搜索逻辑
     console.log(searchForm.value);
   };
-  
+
+  const pageChange = (page) => {
+    console.log(page);
+  };
   const handleAddShop = () => {
     addShopVisible.value = true;
   };

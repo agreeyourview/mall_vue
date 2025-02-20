@@ -31,7 +31,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <AddUser v-if="addUserVisible" />
+      <AddUser v-if="addUserVisible" @close="addUserVisible = false" />
     </div>
   </template>
   

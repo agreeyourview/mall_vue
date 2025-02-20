@@ -1,5 +1,5 @@
 <template>
-    <el-table ref='tableRef' :data="tableData" :height="tableHeight" :cell-style=tableRowClass :header-cell-style=tableHeader :border=border @sort-change="sortChange">
+    <el-table ref='tableRef' :data="tableData" :height="tableHeight" :cell-style=tableRowClass :header-cell-style=tableHeader :border=border>
       <el-table-column
         v-if="page"
         label="No"
@@ -11,7 +11,7 @@
       v-for="(item,index) in tableCol"
       :key="index"
       :prop="item.prop"
-      :label="item.label ? (item.labele ? $t(item.label)+item.labele : $t(item.label)) : ''"
+      :label="item.label"
       :width="item.width"
       :min-width="item.minWidth"
       :fixed="item.fixed ? item.fixed : null"
@@ -50,4 +50,16 @@
   watch(() => props.tableData, (newValue, oldValue) => {
     tableRef.value.setScrollTop(0)
   })
+
+  //列宽
+const getColWidth = ()=>{
+  let size = 17
+  props.tableCol.forEach(item=>{
+    if (item.minWidth) {
+      let labelLong = item.label.length
+      let newWidth = item.sortable ? labelLong * size + 48 : labelLong * size + 24
+      item.minWidth < newWidth ? item.minWidth = newWidth : null
+    }
+  })
+}
 </script>
