@@ -1,0 +1,140 @@
+@import './reset.css';
+
+:root {
+  --bt-theme-color: #0052d9;
+  --bt-theme-color-1: #1677ff;
+  --bt-theme-color-2: #69b1ff;
+  --el-color-primary: #006eff;
+  --el-color-primary-light-3: #0052d9;
+  --el-color-primary-dark-2: #003cab;
+  /* --bt-theme-color: #722ed1;
+  --bt-theme-color-1: #b37feb;
+  --bt-theme-color-2: #d3adf7;
+  --el-color-primary: #9254de;
+  --el-color-primary-light-3: #722ed1;
+  --el-color-primary-dark-2: #531dab; */
+  
+}
+
+span {
+  text-align: center;
+  word-break: break-word;
+}
+
+.el-table td.el-table__cell div {
+  word-break: break-word;
+}
+
+.el-table th.el-table__cell>.cell {
+  word-break: break-word;
+}
+
+.el-table .cell {
+  word-break: break-word;
+}
+
+.el-table th.el-table__cell {
+  user-select: initial !important;
+}
+
+.el-card {
+  border-radius: 10px;
+}
+
+.el-table {
+  direction: ltr;
+}
+
+.el-pagination {
+  direction: ltr;
+}
+
+.el-date-picker {
+  min-width: 330px;
+  direction: ltr;
+}
+
+.el-picker-panel__content {
+  min-width: 300px;
+}
+
+.btDatePicker .el-date-picker {
+  min-width: 440px;
+}
+
+.btDatePicker .el-picker-panel__content {
+  min-width: 410px;
+}
+
+.btDatePicker .el-month-table td .cell {
+  min-width: 85px;
+}
+
+.el-form-item__label {
+  width: 100%;
+  padding: 0 !important;
+  padding-inline-end: 12px !important;
+  text-align: start !important;
+}
+
+.el-form-item__error {
+  width: 100%;
+  text-align: start;
+}
+
+.el-button+.el-button {
+  margin-inline-start: 12px;
+  margin-inline-end: 0 !important;
+}
+
+.el-radio__label {
+  padding: 0 8px !important;
+}
+
+.el-switch {
+  --el-switch-on-color: #13ce66;
+  --el-switch-off-color: #ff4949;
+}
+
+.el-divider {
+  margin-top: 0;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.mb10 {
+  margin-bottom: 10px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.searchBoxClass {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.searchTextClass {
+  white-space: nowrap;
+  min-width: 120px;
+  line-height: 32px;
+  font-weight: bold;
+}
+
+.searchBtnClass {
+  margin-inline-start: 12px;
+}
+
+.box-main {
+  padding: 20px;
+  background: #eee;
+}
+
+.BtText{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
