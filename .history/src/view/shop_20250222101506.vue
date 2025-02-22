@@ -23,9 +23,6 @@
             <template v-if="scopes.item.prop == 'image'">
               <img :src="scopes.scope.row.image" style="width: 60px;height: 60px">
             </template>
-            <template v-else-if="scopes.item.prop == 'isShow'">
-              <el-switch v-model="scopes.scope.row.isShow" active-color="#13ce66" inactive-color="#ff4949" active-text="上架" inactive-text="不上架"></el-switch>
-            </template>
             <div v-else-if="scopes.item.prop == 'operation'" style="display: flex;justify-content: space-around;">
               <el-icon :size="24" class="pointer" @click="handleDetail(scopes.scope.row)">
                 <List />
@@ -46,14 +43,11 @@
         </el-row>
       </el-card>
       <MallDialog :dialogVisible="addShopVisible" :width="'1000px'" :destory="true"
-      :title="'新增商品'" @close="addShopVisibleClose">
-       <template v-slot:main>
-         <el-form ref="addShopRef" :model="addShopForm" :rules="rules" label-width="100px">
-            <el-form-item label="商品名字" prop="name">
-            </el-form-item>
-         </el-form>
-       </template>
+      :title="'新增商品'">
+
       </MallDialog>
+
+      <AddShop v-if="addShopVisible" @close="addShopVisible = false" />
     </div>
   </template>
   
@@ -63,7 +57,6 @@
   import MallDialog from '../components/MallDialog.vue';
   import MallTable from '../components/MallTable.vue';
   import { Search, RefreshRight, List, Edit, Delete } from '@element-plus/icons-vue';
-import { id } from 'element-plus/es/locales.mjs';
   const emit = defineEmits([
   'pageName'
   ])
@@ -80,8 +73,7 @@ import { id } from 'element-plus/es/locales.mjs';
     { id: 4, label: '价格', prop: 'price', minWidth: 120 ,tooltip: true},
     { id: 5, label: '库存', prop: 'stock', minWidth: 120 ,tooltip: true},
     { id: 6, label: '销量', prop: 'sales', minWidth: 120 ,tooltip: true},
-    { id: 7, label: '是否显示', prop: 'isShow', minWidth: 120 ,tooltip: true},
-    { id: 8, label: '操作', prop:'operation', width: 150, fixed: 'right', tooltip: true},
+    { id: 7, label: '操作', prop:'operation', width: 150, fixed: 'right', tooltip: true},
   ]
   const pageNum = ref(1)
   const pageSize = ref(10)
@@ -122,9 +114,7 @@ import { id } from 'element-plus/es/locales.mjs';
   const handleAddShop = () => {
     addShopVisible.value = true;
   };
-  const addShopVisibleClose = () => {
-    addShopVisible.value = false;
-  };
+  
   const handleDetail = (id) => {
     // 处理详情逻辑
     console.log(`查看商品 ${id} 详情`);
