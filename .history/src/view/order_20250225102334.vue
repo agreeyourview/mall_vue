@@ -30,7 +30,7 @@
       <el-divider />
       <el-row class="mb10">
         <MallTable :page="pageNum" :pagesize="30" :tableCol="tableCol" :tableData="tableData"
-          :tableHeight="`calc(100vh - 250px)`" style="border: #dcdfe6 solid 1px;"
+          :tableHeight="`calc(100vh - 434px)`" style="border: #dcdfe6 solid 1px;"
           :tableHeader="{ background: 'var(--el-color-primary)', color: '#fff' }">
           <template v-slot="scopes">
             <template v-if="scopes.item.prop == 'status'">

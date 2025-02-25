@@ -29,9 +29,9 @@
   const checkSize = (file) => {
     const isFormat = file.raw.type == 'image/png' || file.raw.type == 'image/jpeg'
     if (!isFormat) {
-      ElMessage.error("上传照片格式错误" + "!")
+      ElMessage.error(proxy.$t('eltext.upload.errorType') + "!")
     } else if (file.raw.size / 1024 / 1024 > fileSize) {
-      ElMessage.error("上传图片过大"+ { size: fileSize }+ "!")
+      ElMessage.error(proxy.$t('eltext.upload.errorSize', { size: fileSize }) + "!")
     } else {
       handleChange(file)
     }

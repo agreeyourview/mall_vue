@@ -3,7 +3,7 @@
     <el-card>
       <el-row :gutter="20" class="mb20">
         <el-col>
-          <el-button :icon="Plus" type="primary" @click="operationDialogShow(1)">新增规格</el-button>
+          <el-button :icon="Plus" type="primary" @click="operationDialogShow(1)">新增轮播图</el-button>
         </el-col>
       </el-row>
       <el-row class="mb10">
@@ -11,19 +11,25 @@
           :tableHeight="`calc(100vh - 236px)`" style="border: #dcdfe6 solid 1px;"
           :tableHeader="{ background: 'var(--el-color-primary)', color: '#fff' }">
           <template v-slot="scopes">
-            <template v-if="scopes.item.prop == 'operation'">
-              <el-icon :size="24" class="pointer" style="margin-right: 12px;"
-                @click="operationDialogShow(2, scopes.scope.row)">
-                <Edit />
-              </el-icon>
-              <el-popconfirm :confirm-button-text="确认"
-                :cancel-button-text="取消" title="确认删除?" @confirm="deleteFun(scopes.scope.row)">
-                <template #reference>
-                  <el-icon :size="24" class="pointer">
-                    <Delete />
-                  </el-icon>
-                </template>
-              </el-popconfirm>
+            <template v-if="scopes.item.prop == 'imgUrl'">
+              <img :src="scopes.scope.row.imgUrl ? basePath + scopes.scope.row.imgUrl : baseUrl"
+                style="width: 60px;height: 45px">
+            </template>
+            <template v-else-if="scopes.item.prop == 'operation'">
+              <div style="display: flex;align-items: center;">
+                <el-icon :size="24" class="pointer" style="margin-right: 12px;"
+                  @click="operationDialogShow(2, scopes.scope.row)">
+                  <Edit />
+                </el-icon>
+                <el-popconfirm :confirm-button-text="确认"
+                  :cancel-button-text="取消" title="确认删除?" @confirm="deleteFun(scopes.scope.row)">
+                  <template #reference>
+                    <el-icon :size="24" class="pointer">
+                      <Delete />
+                    </el-icon>
+                  </template>
+                </el-popconfirm>
+              </div>
             </template>
             <span v-else>{{ scopes.scope.row[`${scopes.item.prop}`] }}</span>
           </template>
@@ -35,16 +41,15 @@
       </el-row>
     </el-card>
 
-    <MallDialog :dialogVisible="operationDialogVisible" :width="'500px'"
-      :title="operationType == 1 ? '创建规格' : '修改规格'"
-      @close="operationDialogClose()">
+    <MallDialog :dialogVisible="operationDialogVisible" :width="'500px'" :destroy="true"
+      :title="operationType == 1 ? '新增轮播图' : '修改轮播图'" @close="operationDialogClose()">
       <template v-slot:main>
         <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
-          <el-form-item prop="name" :label="'规格的名字'">
-            <el-input v-model="form.name" />
+          <el-form-item prop="imgUrl" label="图片">
+            <MallUpload :imgData="form.imgUrl" :fileSize="2" :uploadStyle="{ width: '198px', height: '148px'}"/>
           </el-form-item>
-          <el-form-item prop="note" :label="'规格的详情'">
-            <el-input v-model="form.note" type="textarea" rows="4" resize='none' />
+          <el-form-item prop="note" label="说明">
+            <el-input v-model="form.note" type="textarea" rows="4" resize='none'></el-input>
           </el-form-item>
         </el-form>
       </template>
@@ -59,24 +64,24 @@
 import { ref, onMounted, reactive, getCurrentInstance } from 'vue';
 import { Plus, Edit, Delete } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-import MallDialog from '../components/MallDialog.vue';
 import MallTable from '../components/MallTable.vue';
+import MallDialog from '../components/MallDialog.vue';
+import MallUpload from '../components/MallUpload.vue';
+import baseUrl from '../assets/img/login.jpg'
 import api from '../api/index'
-const { proxy } = getCurrentInstance()
 const emit = defineEmits([
   'pageName'
 ])
-emit('pageName', 'specification')
-
+emit('pageName', 'banner')
+const basePath = window.httpurl +'/imgs/'
 onMounted(() => {
   getData()
 })
-
 //表格
 const tableCol = [
-  { id: 1, label: "规格的名字", prop: "name", minWidth: 120 },
-  { id: 2, label: "规格的详情", prop: "note", minWidth: 480 },
-  { id: 3, label: "操作", prop: "operation", width: 120, fixed: "right" },
+  { id: 1, label: "banner.bannerImg", prop: "imgUrl", minWidth: 120 },
+  { id: 2, label: "banner.bannerNote", prop: "note", minWidth: 120 },
+  { id: 3, label: "base.operation", prop: "operation", width: 120, fixed: "right" },
 ]
 const tableData = ref([])
 const pageNum = ref(1)
@@ -87,30 +92,32 @@ const pageChange = (e) => {
 }
 const getData = async () => {
   const query = { pageNum: pageNum.value, pageSize: 30 }
-  const res = await api.get('/specification?' + new URLSearchParams(query))
+  const res = await api.get("/banner?" + new URLSearchParams(query))
   if (res.code == 0) {
     tableData.value = res.result.records
     pageTotal.value = res.result.total
   }
 }
+
 //表单校验
 const rules = reactive({
-  name: [
-    { required: true, message: "请输入规格名称", trigger: ['blur'] },
-  ],
+  imgUrl: [
+    { required: true, message: "请选择图片", trigger: ['blur'] }
+  ]
 })
+//弹框数据
 const formRef = ref()
 let form = reactive({
-  name: null,
-  note: null
+  note: null,
+  imgUrl: [],
 })
 const operationType = ref()
-const getOne = async (data) => {
-  const res = await api.get(`/specification/${data}`)
+
+const getOne = async (id) => {
+  const res = await api.get(`/banner/${id}`)
   if (res.code == 0) {
     form = Object.assign(form, { ...res.result })
-  } else {
-    ElMessage.error("数据异常，请重试")
+    form.imgUrl = [{ imgUrl: res.result.imgUrl, file: null }]
   }
 }
 //新增/修改
@@ -126,36 +133,33 @@ const operationDialogShow = async (type, data) => {
 }
 const operationDialogClose = () => {
   formRef.value.resetFields()
-  form.name = null
   form.note = null
+  form.imgUrl = []
   operationDialogVisible.value = false
 }
 const operationDialogConfirm = async () => {
   await formRef.value.validate(async (valid) => {
     if (valid) {
-      let params = { name: form.name }
-      form.note ? params.note = form.note : null
+      const params = new FormData()
+      if(form.note) params.append('note', form.note)
+      params.append('imgUrl', form.imgUrl[0].file ? form.imgUrl[0].file : null)
       if (operationType.value == 1) {
-        console.log(operationType.value);
-        const res = await api.post('/specification', params)
-        console.log(res);
+        const res = await api.post("/banner", params, { headers: { "Content-Type": "multipart/form-data" } })
         if (res.code == 0) {
-          getData()
           ElMessage.success(res.message)
+          getData()
           operationDialogClose()
         } else {
           ElMessage.error(res.message)
-
         }
       } else {
-        const res = await api.put(`/specification/${form.id}`, params)
+        const res = await api.put(`/banner/${form.id}`, params, { headers: { "Content-Type": "multipart/form-data" } })
         if (res.code == 0) {
-          getData()
           ElMessage.success(res.message)
+          getData()
           operationDialogClose()
         } else {
           ElMessage.error(res.message)
-
         }
       }
     }
@@ -163,10 +167,10 @@ const operationDialogConfirm = async () => {
 }
 //删除
 const deleteFun = async (data) => {
-  const res = await api.delete(`/specification/${data.id}`)
+  const res = await api.delete(`/banner/${data.id}`)
   if (res.code == 0) {
-    ElMessage.success(res.message)
     getData()
+    ElMessage.success(res.message)
   } else {
     ElMessage.error(res.message)
   }

@@ -7,7 +7,7 @@
         </el-col>
       </el-row>
       <el-row class="mb10">
-        <MallTable :page="pageNum" :pagesize="30" :tableCol="tableCol" :tableData="tableData"
+        <BtTable :page="pageNum" :pagesize="30" :tableCol="tableCol" :tableData="tableData"
           :tableHeight="`calc(100vh - 236px)`" style="border: #dcdfe6 solid 1px;"
           :tableHeader="{ background: 'var(--el-color-primary)', color: '#fff' }">
           <template v-slot="scopes">
@@ -27,7 +27,7 @@
             </template>
             <span v-else>{{ scopes.scope.row[`${scopes.item.prop}`] }}</span>
           </template>
-        </MallTable>
+        </BtTable>
       </el-row>
       <el-row justify="end">
         <el-pagination v-model:current-page="pageNum" :total="pageTotal" @current-change="pageChange" :page-size="30"
@@ -35,7 +35,7 @@
       </el-row>
     </el-card>
 
-    <MallDialog :dialogVisible="operationDialogVisible" :width="'500px'"
+    <BtDialog :dialogVisible="operationDialogVisible" :width="'500px'"
       :title="operationType == 1 ? '创建规格' : '修改规格'"
       @close="operationDialogClose()">
       <template v-slot:main>
@@ -52,21 +52,21 @@
         <el-button @click="operationDialogClose()">取消</el-button>
         <el-button type="primary" @click="operationDialogConfirm()">确认</el-button>
       </template>
-    </MallDialog>
+    </BtDialog>
   </div>
 </template>
 <script setup>
 import { ref, onMounted, reactive, getCurrentInstance } from 'vue';
 import { Plus, Edit, Delete } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
-import MallDialog from '../components/MallDialog.vue';
-import MallTable from '../components/MallTable.vue';
-import api from '../api/index'
+import BtTable from '@/components/BtTable.vue';
+import BtDialog from '@/components/BtDialog.vue';
+import api from '@/api/index';
 const { proxy } = getCurrentInstance()
 const emit = defineEmits([
   'pageName'
 ])
-emit('pageName', 'specification')
+emit('pageName', 'menu.specification')
 
 onMounted(() => {
   getData()
@@ -74,9 +74,9 @@ onMounted(() => {
 
 //表格
 const tableCol = [
-  { id: 1, label: "规格的名字", prop: "name", minWidth: 120 },
-  { id: 2, label: "规格的详情", prop: "note", minWidth: 480 },
-  { id: 3, label: "操作", prop: "operation", width: 120, fixed: "right" },
+  { id: 1, label: "specification.name", prop: "name", minWidth: 120 },
+  { id: 2, label: "specification.note", prop: "note", minWidth: 480 },
+  { id: 3, label: "base.operation", prop: "operation", width: 120, fixed: "right" },
 ]
 const tableData = ref([])
 const pageNum = ref(1)

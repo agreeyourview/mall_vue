@@ -172,13 +172,13 @@ const resetFun = () => {
 }
 //表格
 const tableCol = [
-  { id: 1, label: "商品的名字", prop: "name", minWidth: 120 },
-  { id: 2, label: "商品的图片", prop: "imgUrl", minWidth: 120 },
-  { id: 3, label: "商品的描述", prop: "description", minWidth: 120 },
-  { id: 4, label: "商品的价格", prop: "price", minWidth: 120 },
-  { id: 5, label: "商品的库存", prop: "num", minWidth: 120 },
-  { id: 9, label: "商品的状态", prop: "status", minWidth: 120, fixed: "right" },
-  { id: 10, label: "操作", prop: "operation", minWidth: 120, fixed: "right" },
+  { id: 1, label: "goods.goodName", prop: "name", minWidth: 120 },
+  { id: 2, label: "goods.goodImg", prop: "imgUrl", minWidth: 120 },
+  { id: 3, label: "goods.goodDescription", prop: "description", minWidth: 120 },
+  { id: 4, label: "goods.goodPrice", prop: "price", minWidth: 120 },
+  { id: 5, label: "goods.goodNum", prop: "num", minWidth: 120 },
+  { id: 9, label: "base.status", prop: "status", minWidth: 120, fixed: "right" },
+  { id: 10, label: "base.operation", prop: "operation", minWidth: 120, fixed: "right" },
 
 ]
 const tableData = ref([])
